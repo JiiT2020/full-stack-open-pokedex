@@ -79,11 +79,12 @@ jobs:
         uses: 8398a7/action-slack@v3
         with:
           status: custom
+          fields: took
           custom_payload: |
             {
               attachments: [{
                 color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
-                text: `A new version deployed (commit ${process.env.AS_COMMIT}).\nBuild took ${process.env.AS_TOOK}.\nComment: ${process.env.AS_MESSAGE}`,
+                text: `A new version deployed (commit ${process.env.AS_COMMIT}).\nBuild ${{ job.status }} in ${process.env.AS_TOOK}.\nComment: ${process.env.AS_MESSAGE}`,
               }]
             }
         env:
