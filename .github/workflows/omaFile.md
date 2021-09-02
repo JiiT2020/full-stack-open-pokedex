@@ -7,3 +7,5 @@
 // laitetaan vielä yksi versio, että näkyy version muuttuminen 0.0.1 --> 0.0.2
 
 // if: ${{ contains(github.event.commits.*.message, '!#skip') }}
+
+// slack
