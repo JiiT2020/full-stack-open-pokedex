@@ -43,6 +43,7 @@ jobs:
           rollbackonhealthcheckfailed: true
           delay: 2
           versioncheck: "pokedex-jiit2020.herokuapp.com/version"
+
       - name: Bump version and push tag
 
         if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ', '), '#skip') }}
@@ -64,8 +65,8 @@ jobs:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
         run: echo "$COMMIT_MESSAGES"
 
-      - name: The job has failed status to slack
-        if: ${{ failure() }}
+      - name: Status to slack if the job has failed
+        if: ${{ github.event_name == 'push' && failure() }}
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
@@ -73,8 +74,8 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
 
-      - name: Status to slack the job has succeeded
-        if: ${{ success() }}
+      - name: Status to slack about success
+        if: ${{ github.event_name == 'push' && success() }}
         uses: 8398a7/action-slack@v3
         with:
           status: custom
@@ -82,7 +83,7 @@ jobs:
             {
               attachments: [{
                 color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
-                text: `A new version deployed (commit ${process.env.AS_COMMIT}).\nBuild took ${process.env.AS_TOOK}.`,
+                text: `A new version deployed (commit ${process.env.AS_COMMIT}).\nBuild took ${process.env.AS_TOOK}.\nComment: ${process.env.AS_MESSAGE}`,
               }]
             }
         env:
