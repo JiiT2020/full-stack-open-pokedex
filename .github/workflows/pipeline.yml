@@ -65,27 +65,27 @@ jobs:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
         run: echo "$COMMIT_MESSAGES"
 
-      - name: Status to slack if the job has failed
-        if: ${{ github.event_name == 'push' && failure() }}
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          fields: repo,message,commit,took # selectable (default: repo,message)
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+#      - name: Status to slack if the job has failed
+#        if: ${{ github.event_name == 'push' && failure() }}
+#        uses: 8398a7/action-slack@v3
+#        with:
+#          status: ${{ job.status }}
+#          fields: repo,message,commit,took # selectable (default: repo,message)
+#        env:
+#          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
 
-      - name: Status to slack about success
-        if: ${{ github.event_name == 'push' && success() }}
-        uses: 8398a7/action-slack@v3
-        with:
-          status: custom
-          fields: took, commit, message, workflow
-          custom_payload: |
-            {
-              attachments: [{
-                color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
-                text: `${process.env.AS_WORKFLOW}\nA new version is deployed (commit ${process.env.AS_COMMIT}).\nBuild ${{ job.status }} in ${process.env.AS_TOOK}.\nComment: ${process.env.AS_MESSAGE}`,
-              }]
-            }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+#      - name: Status to slack about success
+#        if: ${{ github.event_name == 'push' && success() }}
+#        uses: 8398a7/action-slack@v3
+#        with:
+#          status: custom
+#          fields: took, commit, message, workflow
+#          custom_payload: |
+#            {
+#              attachments: [{
+#                color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
+#                text: `${process.env.AS_WORKFLOW}\nA new version is deployed (commit ${process.env.AS_COMMIT}).\nBuild ${{ job.status }} in ${process.env.AS_TOOK}.\nComment: ${process.env.AS_MESSAGE}`,
+#              }]
+#            }
+#        env:
+#          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
