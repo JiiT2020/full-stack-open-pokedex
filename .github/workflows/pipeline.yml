@@ -65,6 +65,8 @@ jobs:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
         run: echo "$COMMIT_MESSAGES"
 
+# 11.19 osuus (alla) kommentoitu pois, koska en halua kaikkea Slackiin. Koodi testattu ja toimii kyllä!
+
 #      - name: Status to slack if the job has failed
 #        if: ${{ github.event_name == 'push' && failure() }}
 #        uses: 8398a7/action-slack@v3
