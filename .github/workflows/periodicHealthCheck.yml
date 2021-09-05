@@ -1,0 +1,26 @@
+
+name: Periodic_Health_Check
+
+on:
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '11 0,12 * * *'
+
+
+jobs:
+  periodic-health-check:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Check the deployed service URL
+        uses: jtalk/url-health-check-action@v1.5
+        with:
+          # Check the following URLs one by one sequentially (putkella eritelty urlit ilman välilyöntejä eli|jos tarpeen)
+          url: https://pokedex-jiit2020.herokuapp.com/
+          # Follow redirects, or just report success on 3xx status codes
+          follow-redirect: no # Optional, defaults to "no"
+          # Fail this action after this many failed attempts
+          max-attempts: 2 # Optional, defaults to 1
+          # Delay between retries
+          retry-delay: 10s # Optional, only applicable to max-attempts > 1
+          # Retry all errors, including 404
+          retry-all: no # Optional, defaults to "no"
