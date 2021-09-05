@@ -1,19 +1,18 @@
 
 name: Periodic_Health_Check
 
-#on:
-#  schedule:
-#    # * is a special character in YAML so you have to quote this string
-#    - cron:  '16 0,12 * * *'
-
 on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches: [master]
-    types: [opened, synchronize]
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '3,13,23,33,43,53 * * * *'
 
+#on:
+#  push:
+#    branches:
+#      - master
+#  pull_request:
+#    branches: [master]
+#    types: [opened, synchronize]
 
 jobs:
   periodic-health-check:
@@ -23,7 +22,7 @@ jobs:
         uses: jtalk/url-health-check-action@v1.5
         with:
           # Check the following URLs one by one sequentially (putkella eritelty urlit ilman välilyöntejä eli|jos tarpeen)
-          url: https://pokedex-jiit2020.herokuapp.com/|https://pokedex-jiit2020.herokuapp.com/version|https://pokedex-jiit2020.herokuapp.com/pokemon/ivysau
+          url: https://pokedex-jiit2020.herokuapp.com/|https://pokedex-jiit2020.herokuapp.com/pokemon/ivysau
           # Follow redirects, or just report success on 3xx status codes
           follow-redirect: no # Optional, defaults to "no"
           # Fail this action after this many failed attempts
